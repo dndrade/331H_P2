@@ -28,18 +28,21 @@ void Stack<T>::pop() {
 }
 
 template <class T>
-void Stack<T>::Top(T&) {
-	items.back();
+void Stack<T>::Top() {
+	items.back(); // should change it to return
 }
 
 template <class T>
-void Stack<T>::copy(const Stack<T>&) {
-
+void Stack<T>::copy(const Stack<T>& other) {
+	//items.reserve(other.items.size());
+	/*for (std::size_t i = 0; i < other.size(); i++) {
+		items.push_back(new Stack<T>(*other.[i]));
+	}*/
 }
 
 template <class T>
 const Stack<T>& Stack<T>::operator=(const Stack<T>& other) {
-
+	copy();
 }
 
 

@@ -10,7 +10,15 @@ int main()
     Stack<int> s;
 
     s.push(1);
+    s.push(3);
+    s.push(5);
     s.print();
+
+    std::cout << "\n COPY \n";
+
+    /*Stack<int> p;
+    p.copy(s);
+    p.print();*/
 
 
 }
