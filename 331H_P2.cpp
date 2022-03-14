@@ -4,22 +4,26 @@
 #include <iostream>
 #include "Stack.h"
 #include "Stack.cpp"
+#include "Evaluate.h"
 
 int main()
 {
     Stack<int> s;
+    Evaluate<int> k;
 
     s.push(1);
     s.push(3);
     s.push(5);
     s.print();
 
-    std::cout << "\n COPY \n";
+    //std::cout << "\n COPY \n";
 
     /*Stack<int> p;
     p.copy(s);
     p.print();*/
 
+    std::cout << "\n OPERATIIONS \n";
+    k.operation(2, 4, '+');
 
 }
 

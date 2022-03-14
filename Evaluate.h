@@ -15,6 +15,7 @@ public:
 	~Evaluate();
 
 	int operatorOrder(char optr); // returns the precedence
+	int operation(int first, int second, char optr);
 
 
 };
