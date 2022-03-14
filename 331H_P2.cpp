@@ -5,6 +5,7 @@
 #include "Stack.h"
 #include "Stack.cpp"
 #include "Evaluate.h"
+#include "Evaluate.cpp"
 
 int main()
 {

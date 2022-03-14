@@ -2,13 +2,20 @@
 
 template <class T>
 Evaluate<T>::Evaluate() {
-
+    std::cout << "constructor";
 }
 
 template <class T>
 Evaluate<T>::~Evaluate() {
-
+    std::cout << "destructor";
 }
+
+
+template <class T>
+void Evaluate<T>::setExpression(std::string expr) {
+    expression = expr;
+}
+
 
 template <class T>
 int Evaluate<T>::operatorOrder(char optr) {
@@ -30,8 +37,11 @@ int Evaluate<T>::operatorOrder(char optr) {
 }
 
 template <class T>
-int Evaluate<T>::operation(int first, int second, char optr) {
-    if (optr == '^') {
+int Evaluate<T>::operation(Stack<char> operators, Stack<int> operands) {
+    char optr = operators.pop(); // get operator at the top
+    first = operands.pop(); // get operand at the top
+    second = operands.pop(); // get following operand to peform the operation
+    if (optr == '^') { // exponent
         int result = first;
         for (int i = 1; i <= second; i++) {
             result = first * result;
@@ -45,6 +55,7 @@ int Evaluate<T>::operation(int first, int second, char optr) {
         return first * second;
     }
     else if (optr == '+') {
+        std::cout << first + second;
         return first + second;
     }
     else if (optr == '-') {
