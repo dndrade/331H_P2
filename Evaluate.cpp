@@ -11,16 +11,19 @@ Evaluate<T>::~Evaluate() {
 }
 
 
-template <class T>
-void Evaluate<T>::setExpression(std::string expr) {
-    expression = expr;
-}
+//template <class T>
+//void Evaluate<T>::setExpression(std::string expr) {
+//    expression = expr;
+//}
 
 
 template <class T>
 int Evaluate<T>::operatorOrder(char optr) {
+    if (optr == '(' || ')') {
+        return 0;
+    }
     // exponents
-    if (optr == '^') {
+    else if (optr == '^') {
         return 3;
     }
     // division and multiplication are the same level
@@ -39,8 +42,8 @@ int Evaluate<T>::operatorOrder(char optr) {
 template <class T>
 int Evaluate<T>::operation(Stack<char> operators, Stack<int> operands) {
     char optr = operators.pop(); // get operator at the top
-    first = operands.pop(); // get operand at the top
-    second = operands.pop(); // get following operand to peform the operation
+    int first = operands.pop(); // get operand at the top
+    int second = operands.pop(); // get following operand to peform the operation
     if (optr == '^') { // exponent
         int result = first;
         for (int i = 1; i <= second; i++) {
@@ -60,5 +63,25 @@ int Evaluate<T>::operation(Stack<char> operators, Stack<int> operands) {
     }
     else if (optr == '-') {
         return first - second;
+    }
+}
+
+template <class T>
+bool Evaluate<T>::isOperator(char optr) {
+    return (optr == '^' || optr == '*' || optr == '/' || optr == '+' || optr == '-' || );
+}
+
+template <class T>
+void Evaluate<T>::feedStacks(std::string expression) {
+    for (int i = 0; i < expression.size(); i++) { // iterate thru expression
+        char op = expression.at(i); // current char
+        if (isOperator(op)) { // if current char is operator
+            std::cout << "Current op @ operator: " << op;
+            Operator.push(op); // add op to Operator stack
+        }
+        else {
+            std::cout << "Current op @ operand: " << op;
+            Operand.push(stoi(op)); // add op to operand stack as an int
+        }
     }
 }

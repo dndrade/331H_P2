@@ -24,7 +24,6 @@ int main()
     p.print();*/
 
     std::cout << "\n OPERATIIONS \n";
-    k.operation(2, 4, '+');
-
+    k.feedStacks(3 + 4 * 2);
 }
 
