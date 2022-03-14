@@ -11,12 +11,6 @@ Evaluate<T>::~Evaluate() {
 }
 
 
-//template <class T>
-//void Evaluate<T>::setExpression(std::string expr) {
-//    expression = expr;
-//}
-
-
 template <class T>
 int Evaluate<T>::operatorOrder(char optr) {
     if (optr == '(' || ')') {
