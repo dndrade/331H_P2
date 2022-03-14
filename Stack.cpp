@@ -28,8 +28,12 @@ void Stack<T>::pop() {
 }
 
 template <class T>
-void Stack<T>::Top() {
-	items.back(); // should change it to return
+T Stack<T>::Top() {
+	if (isEmpty()) {
+		std::cout << "\nStack Underflow."; // list is empty
+		return NULL;
+	}
+	return items.back(); // should change it to return
 }
 
 template <class T>
@@ -56,4 +60,9 @@ void Stack<T>::print() {
 	for (int i : items) {
 		std::cout << i << "\n";
 	}
+}
+
+template <class T>
+int Stack<T>::size() {
+	return items.size();
 }
