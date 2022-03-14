@@ -2,12 +2,12 @@
 
 template <class T>
 Evaluate<T>::Evaluate() {
-    std::cout << "constructor";
+    std::cout << "\nconstructor";
 }
 
 template <class T>
 Evaluate<T>::~Evaluate() {
-    std::cout << "destructor";
+    std::cout << "\ndestructor";
 }
 
 
@@ -40,10 +40,11 @@ int Evaluate<T>::operatorOrder(char optr) {
 }
 
 template <class T>
-int Evaluate<T>::operation(Stack<char> operators, Stack<int> operands) {
-    char optr = operators.pop(); // get operator at the top
-    int first = operands.pop(); // get operand at the top
-    int second = operands.pop(); // get following operand to peform the operation
+int Evaluate<T>::operation() {
+    char optr = Operators.Top(); // get operator at the top
+    int first = Operands.Top(); // get operand at the top
+    Operands.pop(); // remove top item
+    int second = Operands.Top(); // get new top operand to peform the operation
     if (optr == '^') { // exponent
         int result = first;
         for (int i = 1; i <= second; i++) {
@@ -68,20 +69,23 @@ int Evaluate<T>::operation(Stack<char> operators, Stack<int> operands) {
 
 template <class T>
 bool Evaluate<T>::isOperator(char optr) {
-    return (optr == '^' || optr == '*' || optr == '/' || optr == '+' || optr == '-' || );
+    return ((optr == '^') || (optr == '*') || (optr == '/') || (optr == '+') || (optr == '-'));
 }
 
 template <class T>
 void Evaluate<T>::feedStacks(std::string expression) {
-    for (int i = 0; i < expression.size(); i++) { // iterate thru expression
+    // iterate thru each chr of the expression
+    for (unsigned int i = 0; i < expression.size(); i++) {
         char op = expression.at(i); // current char
-        if (isOperator(op)) { // if current char is operator
-            std::cout << "Current op @ operator: " << op;
+        if (isOperator(op) && op != ' ') { // if current char is operator and not white spc
+            std::cout << "\nCurrent op @ operator: " << op << "\n";
             Operator.push(op); // add op to Operator stack
         }
         else {
-            std::cout << "Current op @ operand: " << op;
-            Operand.push(stoi(op)); // add op to operand stack as an int
+            if (op != ' ') { // skip white spc
+                std::cout << "\nCurrent op @ operand: " << op;
+                Operand.push(op - 48); // add op to operand stack as an int
+            }
         }
     }
 }
