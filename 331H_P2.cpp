@@ -2,29 +2,87 @@
 //
 
 #include <iostream>
-#include "Stack.h"
-#include "Stack.cpp"
-#include "Evaluate.h"
-#include "Evaluate.cpp"
+#include <stack>
 
-int main()
-{
-    Stack<int> s;
-    Evaluate<int> k;
+using namespace std;
 
-    s.push(1);
-    s.push(3);
-    s.push(5);
-    s.print();
+bool isOperator(char);
+int main(){
+    stack<double> operands;
+    stack<char> operators;
+    
+    bool previousIsOperator = false;
+    
+    cout << "Please enter an equation: ";
+    // 88 + 9\n
+     double number;
+     while(cin.peek() != '\n'){
+      cout << "Current character " << (char)cin.peek() << "\n";
+      
+      if(isdigit(cin.peek()) || (cin.peek() == '-' && previousIsOperator)) {
+          cin >> number;
+          operands.push(number);
+          // 8 * 9 + 1
+          //  72 + 1 
+          if(!operators.empty() && (operators.top() == '*' || operators.top() == '/')){
+              double num1 = operands.top();
+            operands.pop();
+            double num2 = operands.top();
+            operands.pop();
 
-    //std::cout << "\n COPY \n";
+            char operation = operators.top();
+            operators.pop();
 
-    /*Stack<int> p;
-    p.copy(s);
-    p.print();*/
 
-    std::cout << "\n OPERATIIONS \n";
-    k.feedStacks("3 + 4 *  2");
-    k.operation();
+            if(operation == '+'){
+            operands.push(num2 + num1);
+            }
+            else if(operation == '-'){
+            operands.push(num2 - num1);
+            }
+            else if(operation == '*'){
+            operands.push(num2 * num1);
+            }
+            else if(operation == '/'){
+            operands.push(num2 / num1);
+            }
+        }
+    }else if(isOperator(cin.peek())){
+      // It's an operator do something
+      operators.push(cin.get());
+    }else{
+      // If current character is not a number or an operator, ignore it
+      cin.ignore();
+    }
+  }
+
+  while(!operators.empty()){
+    double num1 = operands.top();
+    operands.pop();
+    double num2 = operands.top();
+    operands.pop();
+
+    char operation = operators.top();
+    operators.pop();
+
+    if (operation == '+'){
+      operands.push(num2 + num1);
+    }
+    else if (operation == '-'){
+      operands.push(num2 - num1);
+    }
+    else if(operation == '*'){
+      operands.push(num2 * num1);
+    }
+    else if(operation == '/'){
+      operands.push(num2 / num1);
+    }
+  }
+
+  cout << "Answer: " << operands.top() << "\n";
+  return 0;
 }
 
+bool isOperator(char optr) {
+  return ((optr == '*') || (optr == '/') || (optr == '+') || (optr == '-'));
+}
