@@ -2,6 +2,18 @@
 #include <string>
 #include <stack>
 
+/*
+    Status:
+        -2+3 [pass]
+        2+4/3 [pass]
+        -(2+3) [fail]
+        -2+5*5 [fail]
+        2+(7+5) [pass]
+        2+3+-2 [fail]
+        3+4--5 [fail]
+*/
+
+
 bool isOperator(char optr);
 int priority(char operation);
 int operations(std::stack<char> &operators, std::stack<int> &operands);
@@ -45,16 +57,17 @@ int priority(char operation)
     case '/':
         return 2;
         break;
+    // maybe add () here [review isdigit @ evaluateExpression]
     }
     return -1;
-}
+} // END PRIORITY()
 
 /*
  * Peforms arithmetic operations
  */
 int operations(std::stack<char> &operators, std::stack<int> &operands)
 {
-    std::cout << "\n\nOperations about to start.\n";
+    std::cout << "\n\n[line 70] Operations about to start.\n";
     int y = operands.top();
     std::cout << "\nx = " << y << "\n"; // dbg
     operands.pop();
@@ -63,7 +76,7 @@ int operations(std::stack<char> &operators, std::stack<int> &operands)
     operands.pop();
 
     char optr = operators.top();
-    std::cout << "\nCurrent Operation = " << optr << "\n"; // dbg
+    std::cout << "\n[line 79] Current Operation = " << optr << "\n"; // dbg
     operators.pop();
 
     switch (optr)
@@ -73,7 +86,7 @@ int operations(std::stack<char> &operators, std::stack<int> &operands)
         std::cout << "\n"
                   << x << "+" << y << " = " << x + y; // dbg
         operands.push(x + y);
-        std::cout << "\n Top @ Operand after pushing addition [im inside operations()]: " << operands.top(); // dbg
+        std::cout << "\n[line 89] Top @ Operand after pushing addition [im inside operations()]: " << operands.top(); // dbg
     }
     break;
     case '-':
@@ -96,7 +109,7 @@ int operations(std::stack<char> &operators, std::stack<int> &operands)
     {
         if (y == 0)
         {
-            std::cout << "\nUndefined: cannot divide by 0.\n";
+            std::cout << "\n [line 112] Undefined: cannot divide by 0.\n";
         }
         else
         {
@@ -109,10 +122,8 @@ int operations(std::stack<char> &operators, std::stack<int> &operands)
     break;
     } // end switch
 
-    // operators.pop();
-    // std::cout << "\n Top @ Operator after operation and pop() [im inside operations()]: " << operators.top(); //dbg
     return operands.top();
-}
+} // END OPERATIONS()
 
 /*
  * Expression Evaluation, prints the final result
@@ -134,22 +145,24 @@ void evaluateExpression(std::string &expr)
                 // does not support multidigit numbers yet
                 prevIsParenthesis = false;
                 std::cout << "\nElement isDIGIT: " << expr.at(i) << "\n"; // dbug
-                Operand.push(expr.at(i) - 48);
-                std::cout << "\n[line 141] Push element to <operand>: " << expr.at(i) << "\n"; // dbug
+                int number = 0;
+                while ( i <= expr.length() - 1 && isdigit(expr.at(i)))
+                {
+                    number = number * 10 + (expr.at(i) - 48); // convert into int
+                    i++;
+                }
+                if (i <= expr.length() - 1)
+                {
+                    i--;
+                }
+                std::cout << "\nop added to <operand>: " << number; // dbg
+                Operand.push(number);                               // add operand
             }                                                                                  // // END isDIGIT CHECK
 
             // OPERATOR CHECK
             else if (isOperator(expr.at(i)))
             {
                 std::cout << "\n\nElement isOPERATOR: " << expr.at(i) << "\n";
-                // Case 1: Its a negative number
-                // if (expr.at(i) == '-' & prevIsParenthesis)
-                // {
-                //     Operand.push(-1);                                      // add -1 to Operand
-                //     std::cout << "\n[line 142] op added to <operand>: -1"; // dbug
-                //     Operator.push('*');                                    // add * to Operator
-                //     std::cout << "\n[line 144] op added to <operator>: *"; // dbug
-                // }
                 // PARENTHESIS OPERATION
                 if (expr.at(i) == ')')
                 {
@@ -164,7 +177,6 @@ void evaluateExpression(std::string &expr)
                 // Case 2: remaining operators and ('-' subtraction)
                 else
                 {
-
                     // Update parenthesis bool
                     if (expr.at(i) == '(')
                     {
@@ -175,22 +187,22 @@ void evaluateExpression(std::string &expr)
                     while (!Operator.empty() && (priority(expr.at(i)) <= priority(Operator.top())))
                     {
             
-                        std::cout << "\n[line 181] Top <operator> current char: " << expr.at(i); // dbug
-                        std::cout << "\n[line 182] Top <operator> priority: " << Operator.top(); // dbug
+                        std::cout << "\n[line 191] Top <operator> current char: " << expr.at(i); // dbug
+                        std::cout << "\n[line 132] Top <operator> priority: " << Operator.top(); // dbug
                         int result = operations(Operator, Operand);                              // perform parenthesis operation
                         Operand.push(result);                                                    // add result to Operand
-                    }
-                    Operator.push(expr.at(i));
-                    std::cout << "\n[line 187] <operator> adding: " << expr.at(i); // dbug 
+                    } // END while loop
+                    // END OF PRECEDENCE EVALUATION
+                    Operator.push(expr.at(i));                                                  // add Operator
+                    std::cout << "\n[line 199] <operator> adding: " << expr.at(i); // dbug 
                     if (expr.at(i) == '-' && prevIsParenthesis)
                     {
                         Operator.pop();                                         // remove -
                         Operand.push(-1);                                      // add -1 to Operand
-                        std::cout << "\n[line 192] op added to <operand>: -1"; // dbug
+                        std::cout << "\n[line 204] op added to <operand>: -1"; // dbug
                         Operator.push('*');                                    // add * to Operator
-                        std::cout << "\n[line 194] op added to <operator>: *"; // dbug
+                        std::cout << "\n[line 206] op added to <operator>: *"; // dbug
                     }
-                                                                                          // END OF PRECEDENCE EVALUATION
                 }  // end of case 2
             }  // END OPERATOR CHECK
     }  // END FOR LOOP (finished placing elements into stacks)
@@ -217,4 +229,4 @@ void evaluateExpression(std::string &expr)
     }
 
     std::cout << "\n Final result: " << result;
-}
+} // END expression EVALUATION
