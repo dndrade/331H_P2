@@ -12,7 +12,7 @@ int main()
 
     std::string input;
     std::cout << "\nEnter Expression: ";
-    std::cin >> input;
+    std::getline(std::cin, input);
 
     evaluateExpression(input);
 
@@ -124,13 +124,10 @@ void evaluateExpression(std::string &expr)
     bool prevIsParenthesis = true; // will identify negative numbers
 
     // iterate through each char of expression
-    for (int i = 0; i <= expr.length() - 1; i++)
+    for (int i = 0; i < expr.length(); i++)
     {
         std::cout << "\nBegin Loop element: " << expr.at(i) << "\n"; // dbug
-        // char current = expr.at(i);
 
-        if (expr.at(i) != ' ' && expr.at(i) != '\n')
-        {
             // isDIGIT CHECK
             if (isdigit(expr.at(i)))
             {
@@ -138,7 +135,7 @@ void evaluateExpression(std::string &expr)
                 prevIsParenthesis = false;
                 std::cout << "\nElement isDIGIT: " << expr.at(i) << "\n"; // dbug
                 Operand.push(expr.at(i) - 48);
-                std::cout << "\n[line 132] Push element to <operand>: " << expr.at(i) << "\n"; // dbug
+                std::cout << "\n[line 141] Push element to <operand>: " << expr.at(i) << "\n"; // dbug
             }                                                                                  // // END isDIGIT CHECK
 
             // OPERATOR CHECK
@@ -185,7 +182,7 @@ void evaluateExpression(std::string &expr)
                     }
                     Operator.push(expr.at(i));
                     std::cout << "\n[line 187] <operator> adding: " << expr.at(i); // dbug 
-                    if (expr.at(i) == '-' & prevIsParenthesis)
+                    if (expr.at(i) == '-' && prevIsParenthesis)
                     {
                         Operator.pop();                                         // remove -
                         Operand.push(-1);                                      // add -1 to Operand
@@ -196,8 +193,6 @@ void evaluateExpression(std::string &expr)
                                                                                           // END OF PRECEDENCE EVALUATION
                 }  // end of case 2
             }  // END OPERATOR CHECK
-
-        } // end of space if
     }  // END FOR LOOP (finished placing elements into stacks)
     std::cout << "\nAll op have been placed into stacks."; // dbg
 
