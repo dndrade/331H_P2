@@ -186,7 +186,6 @@ void evaluateExpression(std::string &expr)
                     // PRECEDENCE EVALUATION
                     while (!Operator.empty() && (priority(expr.at(i)) <= priority(Operator.top())))
                     {
-            
                         std::cout << "\n[line 191] Top <operator> current char: " << expr.at(i); // dbug
                         std::cout << "\n[line 132] Top <operator> priority: " << Operator.top(); // dbug
                         int result = operations(Operator, Operand);                              // perform parenthesis operation
